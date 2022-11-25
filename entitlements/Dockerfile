@@ -5,6 +5,7 @@ USER root
 COPY ./etc-pki-entitlement /etc/pki/entitlement
 
 RUN ls /etc/pki/entitlement
+RUN ls /etc/yum.repos.d
 
 # Delete /etc/rhsm-host to use entitlements from the build container
 RUN rm -f /etc/rhsm-host
