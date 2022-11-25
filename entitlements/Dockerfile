@@ -3,8 +3,6 @@ FROM registry.redhat.io/rhel9/python-39:latest
 USER root
 
 COPY ./etc-pki-entitlement /etc/pki/entitlement
-COPY ./rhsm-conf /etc/rhsm
-COPY ./rhsm-ca /etc/rhsm/ca
 
 RUN ls /etc/pki/entitlement
 
