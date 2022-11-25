@@ -3,8 +3,13 @@ FROM registry.redhat.io/rhel9/python-39:latest
 USER root
 
 COPY ./etc-pki-entitlement /etc/pki/entitlement
+# Copy subscription manager configurations
+COPY ./rhsm-conf /etc/rhsm
+COPY ./rhsm-ca /etc/rhsm/ca
 
 RUN ls /etc/pki/entitlement
+RUN ls /etc/rhsm
+RUN ls /etc/rhsm/ca
 
 # Delete /etc/rhsm-host to use entitlements from the build container
 RUN rm -f /etc/rhsm-host
