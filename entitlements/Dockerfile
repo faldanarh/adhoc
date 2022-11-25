@@ -2,24 +2,23 @@ FROM registry.redhat.io/rhel9/python-39:latest
 
 USER root
 
+# Copy entitlements
 COPY ./etc-pki-entitlement /etc/pki/entitlement
+# Copy subscription manager configurations
 COPY ./rhsm-conf /etc/rhsm
 COPY ./rhsm-ca /etc/rhsm/ca
 
-RUN ls /etc/pki/entitlement
-
 # Delete /etc/rhsm-host to use entitlements from the build container
-RUN rm -f /etc/rhsm-host
-
-# Check enabled repositories
-#RUN yum repolist all
-RUN dnf install --enablerepo=rhel-9-for-x86_64-appstream-rpms -y golang && \
+RUN rm /etc/rhsm-host && \
+    # Initialize /etc/yum.repos.d/redhat.repo
+    # See https://access.redhat.com/solutions/1443553
+    yum repolist --disablerepo=* && \
+    subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms && \
+    yum -y update && \
     # Remove entitlements and Subscription Manager configs
     rm -rf /etc/pki/entitlement && \
     rm -rf /etc/rhsm
-#RUN yum install -y golang
 
-# OpenShift requires images to run as non-root by default
 USER 1001
 
 ENTRYPOINT ["/bin/bash"]
