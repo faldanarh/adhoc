@@ -12,28 +12,28 @@ spec:
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
   strategy:
-    type: Docker
     dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python-39:latest
+      volumes:
+      - name: etc-pki-entitlement
+        mounts:
+        - destinationPath: /etc/pki/entitlement
+        source:
+          type: Secret
+          secret:
+            secretName: etc-pki-entitlement
       env:
         - name: GIT_SSL_NO_VERIFY
           value: 'false'
-      dockerfilePath: ./Dockerfile
+      dockerfilePath: Dockerfile
   postCommit: {}
   source:
     type: Git
     git:
       uri: 'https://github.com/faldanarh/adhoc.git'
       ref: rhel9-entitlements-rhsm
-    secrets:
-      - secret:
-          name: etc-pki-entitlement
-        destinationDir: etc-pki-entitlement
-      - secret:
-          name: rhsm-conf
-        destinationDir: rhsm-conf
-      - secret:
-          name: rhsm-ca
-        destinationDir: rhsm-ca
     contextDir: "entitlements/"
   runPolicy: Serial
 
