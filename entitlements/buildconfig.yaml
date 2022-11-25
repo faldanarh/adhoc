@@ -23,17 +23,11 @@ spec:
     type: Git
     git:
       uri: 'https://gitlab.corp.redhat.com/ckhare/adhoc.git'
-      ref: rhel9-entitlements-rhsm
+      ref: rhel8-entitlements-rhsm
     secrets:
       - secret:
           name: etc-pki-entitlement
         destinationDir: etc-pki-entitlement
-      - secret:
-          name: rhsm-conf
-        destinationDir: rhsm-conf
-      - secret:
-          name: rhsm-ca
-        destinationDir: rhsm-ca
     contextDir: "entitlements/"
   runPolicy: Serial
 
